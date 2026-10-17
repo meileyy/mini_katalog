@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../app/theme.dart';
 
 // Ürün görselini internetten yükler: yüklenirken gösterge, hata olursa gri kutu.
-// Boyutu ebeveyn belirlemeli (kartta Expanded, detayda AspectRatio; sepet
-// satırında SizedBox içinde kullanılacak). Görsel verilen alanı doldurur.
+// Boyutu ebeveyn belirlemeli (kartta Expanded, detayda AspectRatio, sepet
+// satırında SizedBox). Görsel verilen alanı doldurur.
 class ProductImage extends StatelessWidget {
   final String url;
   final int? cacheWidth;

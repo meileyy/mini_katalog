@@ -5,6 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mini_katalog/main.dart';
 import 'package:mini_katalog/models/product.dart';
 import 'package:mini_katalog/state/cart_controller.dart';
+import 'package:mini_katalog/widgets/cart_item_tile.dart';
+import 'package:mini_katalog/widgets/product_card.dart';
 
 void main() {
   // Global sepet testler arasında durum taşır; her test boş sepetle başlar.
@@ -80,4 +82,43 @@ void main() {
     await tester.pump();
     expect(find.widgetWithText(Badge, '1'), findsOneWidget);
   });
+
+  testWidgets(
+    'Akış: ana sayfa → detay → Add to Cart → sepet → "‹ Cart" ile detaya dönüş',
+    (WidgetTester tester) async {
+      // Arama testindeki gibi: önbellek temizlenir, JSON gerçek zamanda okunur.
+      rootBundle.clear();
+      await tester.pumpWidget(const MiniKatalogApp());
+      await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 500)),
+      );
+      await tester.pump();
+
+      // Ürüne dokun → detay ekranı (route arguments). Test penceresi
+      // 800x600; kartın alttaki metni ekran dışında kalır, bu yüzden
+      // metne değil kartın ortasına dokunulur.
+      await tester.tap(find.widgetWithText(ProductCard, 'iPhone 15 Pro'));
+      await tester.pump(); // geçiş başlar
+      await tester.pump(const Duration(milliseconds: 500)); // geçiş biter
+      expect(find.text('Description'), findsOneWidget);
+
+      await tester.tap(find.text('Add to Cart'));
+      await tester.pump();
+      expect(cartController.count, 1);
+
+      // Detay AppBar'ındaki sepet ikonu → sepet ekranı
+      await tester.tap(find.byTooltip('Cart'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+      expect(find.byType(CartItemTile), findsOneWidget);
+      expect(find.text('iPhone 15 Pro'), findsOneWidget);
+
+      // "‹ Cart" → detay ekranına geri
+      await tester.tap(find.text('Cart'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+      expect(find.byType(CartItemTile), findsNothing);
+      expect(find.text('Add to Cart'), findsOneWidget);
+    },
+  );
 }
