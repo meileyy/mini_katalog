@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   IconButton(
                     icon: const Icon(Icons.shopping_bag_outlined),
                     color: AppColors.textPrimary,
-                    tooltip: 'Sepet',
+                    tooltip: 'Cart',
                     onPressed: () =>
                         Navigator.pushNamed(context, AppRoutes.cart),
                   ),
@@ -80,16 +80,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     if (snapshot.connectionState != ConnectionState.done) {
                       return const Center(child: CircularProgressIndicator());
                     }
-                    // Okuma sırasında hata olduysa mesaj
+                    // Okuma sırasında hata olduysa mesaj (ayrıntı konsola yazılır)
                     if (snapshot.hasError) {
-                      return Center(
-                        child: Text('Ürünler yüklenemedi: ${snapshot.error}'),
+                      debugPrint('Ürünler yüklenemedi: ${snapshot.error}');
+                      return const Center(
+                        child: Text('Failed to load products.'),
                       );
                     }
 
                     final List<Product> products = snapshot.data ?? [];
                     if (products.isEmpty) {
-                      return const Center(child: Text('Ürün bulunamadı.'));
+                      return const Center(child: Text('No products found.'));
                     }
                     return _buildGrid(products);
                   },

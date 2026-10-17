@@ -15,7 +15,7 @@ class DetailScreen extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new),
-          tooltip: 'Geri',
+          tooltip: 'Back',
           onPressed: () => Navigator.pop(context),
         ),
       ),
