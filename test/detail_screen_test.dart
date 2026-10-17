@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mini_katalog/app/theme.dart';
 import 'package:mini_katalog/models/product.dart';
 import 'package:mini_katalog/screens/detail/detail_screen.dart';
+import 'package:mini_katalog/state/cart_controller.dart';
 
 // Detay ekranını, ürünü route argümanı olarak vererek açar (uygulamadaki gibi).
 Future<void> pumpDetail(WidgetTester tester, Product product) async {
@@ -33,6 +34,9 @@ const Product homePodMini = Product(
 );
 
 void main() {
+  // Global sepet aynı dosyadaki testler arasında durum taşır; her test boş başlar.
+  setUp(() => cartController.clear());
+
   testWidgets(
     'Ürün argümanla açılınca ad, Description ve Specifications görünür',
     (WidgetTester tester) async {
@@ -67,4 +71,37 @@ void main() {
     expect(find.text('Test Product'), findsOneWidget);
     expect(find.text('Specifications'), findsNothing);
   });
+
+  testWidgets(
+    'Add to Cart: "Added to cart" görünür, sepet adedi ve rozet artar',
+    (WidgetTester tester) async {
+      await pumpDetail(tester, homePodMini);
+      expect(cartController.count, 0);
+
+      // AppBar'daki rozet: sepet boşken etiket gizli.
+      final Finder appBarBadge = find.descendant(
+        of: find.byType(AppBar),
+        matching: find.byType(Badge),
+      );
+      expect(tester.widget<Badge>(appBarBadge).isLabelVisible, isFalse);
+
+      await tester.tap(find.text('Add to Cart'));
+      await tester.pump(); // SnackBar açılmaya başlar
+      expect(find.text('Added to cart'), findsOneWidget);
+      expect(cartController.count, 1);
+      expect(
+        find.descendant(of: find.byType(AppBar), matching: find.text('1')),
+        findsOneWidget,
+      );
+
+      // İkinci basış: aynı ürün ayrı satır olarak eklenir, rozet 2 olur.
+      await tester.tap(find.text('Add to Cart'));
+      await tester.pump();
+      expect(cartController.count, 2);
+      expect(
+        find.descendant(of: find.byType(AppBar), matching: find.text('2')),
+        findsOneWidget,
+      );
+    },
+  );
 }

@@ -3,9 +3,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:mini_katalog/main.dart';
+import 'package:mini_katalog/models/product.dart';
+import 'package:mini_katalog/state/cart_controller.dart';
 
 void main() {
-  testWidgets('Uygulama açılınca ana sayfa geliyor', (WidgetTester tester) async {
+  // Global sepet testler arasında durum taşır; her test boş sepetle başlar.
+  setUp(() => cartController.clear());
+
+  testWidgets('Uygulama açılınca ana sayfa geliyor', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(const MiniKatalogApp());
 
     // Ana sayfanın "Discover" başlığı ve sepet (çanta) ikonu görünmeli.
@@ -47,5 +54,30 @@ void main() {
     await tester.enterText(find.byType(TextField), 'İPHONE');
     await tester.pump();
     expect(find.text('iPhone 15 Pro'), findsOneWidget);
+  });
+
+  testWidgets('Sepet rozeti: boşken görünmez, ürün eklenince adet görünür', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const MiniKatalogApp());
+
+    // Sepet boş: rozet etiketi gizli.
+    expect(tester.widget<Badge>(find.byType(Badge)).isLabelVisible, isFalse);
+
+    // Ürün eklenir; ListenableBuilder ikonu yeniden çizer.
+    cartController.add(
+      const Product(
+        id: 1,
+        name: 'iPhone 15 Pro',
+        tagline: '',
+        description: '',
+        price: '\$999',
+        currency: 'USD',
+        image: '',
+        specs: {},
+      ),
+    );
+    await tester.pump();
+    expect(find.widgetWithText(Badge, '1'), findsOneWidget);
   });
 }

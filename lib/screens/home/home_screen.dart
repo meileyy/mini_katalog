@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../app/routes.dart';
 import '../../app/theme.dart';
 import '../../data/product_repository.dart';
 import '../../models/product.dart';
 import '../../utils/search_text.dart';
+import '../../widgets/cart_icon_button.dart';
 import '../../widgets/product_card.dart';
 import '../../widgets/search_bar_field.dart';
 
@@ -55,13 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Expanded(
                     child: Text('Discover', style: textTheme.headlineMedium),
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.shopping_bag_outlined),
-                    color: AppColors.textPrimary,
-                    tooltip: 'Cart',
-                    onPressed: () =>
-                        Navigator.pushNamed(context, AppRoutes.cart),
-                  ),
+                  const CartIconButton(),
                 ],
               ),
               Text(

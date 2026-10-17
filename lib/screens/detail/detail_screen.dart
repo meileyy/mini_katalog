@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../app/theme.dart';
 import '../../models/product.dart';
+import '../../widgets/add_to_cart_button.dart';
 import '../../widgets/back_label_button.dart';
+import '../../widgets/cart_icon_button.dart';
 import '../../widgets/product_image.dart';
 import '../../widgets/spec_chip.dart';
 
@@ -32,6 +34,9 @@ class DetailScreen extends StatelessWidget {
         // Varsayılan leading alanı (56 px) "‹ Back" için dar; genişletilir.
         leadingWidth: 100,
         leading: const BackLabelButton(label: 'Back'),
+        // Yönergede detayda sepet ikonu yok; sepete geri dönmeden
+        // gidilebilsin diye bilinçli olarak eklendi.
+        actions: const [CartIconButton(), SizedBox(width: 8)],
       ),
       // Uzun açıklamada taşma olmasın diye içerik kaydırılabilir.
       body: SingleChildScrollView(
@@ -97,8 +102,10 @@ class DetailScreen extends StatelessWidget {
           ],
         ),
       ),
-      // Adım 9: "Add to Cart" butonu buraya bottomNavigationBar olarak
-      // eklenecek; böylece kaydırmadan bağımsız, ekranın altında sabit durur.
+      // bottomNavigationBar kaydırma alanının dışında olduğu için buton
+      // içerik kaydırılsa da ekranın altında sabit durur. SnackBar da
+      // otomatik olarak butonun üstünde açılır.
+      bottomNavigationBar: AddToCartButton(product: product),
     );
   }
 }
