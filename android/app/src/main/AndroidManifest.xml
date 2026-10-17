@@ -1,4 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Ürün görselleri Image.network ile internetten yüklenir.
+         Debug/profile manifest'lerinde bu izin zaten var; release APK'da
+         bu satır olmazsa görseller gelmez. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="mini_katalog"
         android:name="${applicationName}"
