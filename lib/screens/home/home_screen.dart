@@ -5,6 +5,7 @@ import '../../app/theme.dart';
 import '../../data/product_repository.dart';
 import '../../models/product.dart';
 import '../../widgets/product_card.dart';
+import '../../widgets/search_bar_field.dart';
 
 // Ana sayfa: başlık, banner ve 2 sütunlu ürün grid'i.
 class HomeScreen extends StatefulWidget {
@@ -19,10 +20,20 @@ class _HomeScreenState extends State<HomeScreen> {
   // her yeniden çizimde JSON tekrar okunurdu.
   late final Future<List<Product>> _productsFuture;
 
+  // Arama çubuğunun metni ve filtrede kullanılan temizlenmiş sorgu
+  final TextEditingController _searchController = TextEditingController();
+  String _query = '';
+
   @override
   void initState() {
     super.initState();
     _productsFuture = const ProductRepository().loadProducts();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -59,7 +70,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              // Adım 7: arama çubuğu buraya gelecek.
+              // Arama: her harfte setState ile sorgu güncellenir, grid yeniden çizilir.
+              SearchBarField(
+                controller: _searchController,
+                onChanged: (value) => setState(() => _query = value.trim()),
+              ),
+              const SizedBox(height: 16),
               // Banner: uygulamaya gömülü görsel (Image.asset)
               ClipRRect(
                 borderRadius: BorderRadius.circular(16),
@@ -89,10 +105,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
 
                     final List<Product> products = snapshot.data ?? [];
-                    if (products.isEmpty) {
+
+                    // Filtre burada yapılır; _productsFuture yeniden
+                    // oluşturulmadığı için JSON tekrar okunmaz.
+                    // Büyük/küçük harf farkı gözetilmez.
+                    final String query = _query.toLowerCase();
+                    final List<Product> filtered = products
+                        .where((p) => p.name.toLowerCase().contains(query))
+                        .toList();
+
+                    // Hem boş JSON hem de sonuçsuz arama için aynı mesaj
+                    if (filtered.isEmpty) {
                       return const Center(child: Text('No products found.'));
                     }
-                    return _buildGrid(products);
+                    return _buildGrid(filtered);
                   },
                 ),
               ),
@@ -107,6 +133,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildGrid(List<Product> products) {
     return GridView.builder(
       padding: const EdgeInsets.only(bottom: 16),
+      // Grid kaydırılınca klavye kapanır.
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 12,

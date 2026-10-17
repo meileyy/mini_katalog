@@ -24,12 +24,12 @@ class ProductCard extends StatelessWidget {
     // Card'ın rengi, köşeleri ve kırpması temadaki cardTheme'den gelir.
     return Card(
       child: InkWell(
-        // Ürün, route argümanı olarak detay ekranına gönderilir.
-        onTap: () => Navigator.pushNamed(
-          context,
-          AppRoutes.detail,
-          arguments: product,
-        ),
+        onTap: () {
+          // Klavye açıksa kapanır; detaydan dönünce tekrar açılmaz.
+          FocusScope.of(context).unfocus();
+          // Ürün, route argümanı olarak detay ekranına gönderilir.
+          Navigator.pushNamed(context, AppRoutes.detail, arguments: product);
+        },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
