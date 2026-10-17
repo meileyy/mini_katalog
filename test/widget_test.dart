@@ -37,5 +37,15 @@ void main() {
     await tester.enterText(find.byType(TextField), 'xyzxyz');
     await tester.pump();
     expect(find.text('No products found.'), findsOneWidget);
+
+    // Türkçe karakter uyumu: "ıphone" ve "İPHONE" de iPhone ürünlerini bulur.
+    await tester.enterText(find.byType(TextField), 'ıphone');
+    await tester.pump();
+    expect(find.text('iPhone 15 Pro'), findsOneWidget);
+    expect(find.text('MacBook Pro 16"'), findsNothing);
+
+    await tester.enterText(find.byType(TextField), 'İPHONE');
+    await tester.pump();
+    expect(find.text('iPhone 15 Pro'), findsOneWidget);
   });
 }

@@ -4,6 +4,7 @@ import '../../app/routes.dart';
 import '../../app/theme.dart';
 import '../../data/product_repository.dart';
 import '../../models/product.dart';
+import '../../utils/search_text.dart';
 import '../../widgets/product_card.dart';
 import '../../widgets/search_bar_field.dart';
 
@@ -108,10 +109,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     // Filtre burada yapılır; _productsFuture yeniden
                     // oluşturulmadığı için JSON tekrar okunmaz.
-                    // Büyük/küçük harf farkı gözetilmez.
-                    final String query = _query.toLowerCase();
+                    // Büyük/küçük harf ve Türkçe karakter farkı gözetilmez
+                    // ("ıphone", "İPHONE" → iPhone ürünleri).
+                    final String query = normalizeSearchText(_query);
                     final List<Product> filtered = products
-                        .where((p) => p.name.toLowerCase().contains(query))
+                        .where(
+                          (p) => normalizeSearchText(p.name).contains(query),
+                        )
                         .toList();
 
                     // Hem boş JSON hem de sonuçsuz arama için aynı mesaj
