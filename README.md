@@ -1,16 +1,18 @@
 # Mini Katalog Uygulaması
 
-Flutter eğitim haftası kapsamında geliştirilen, ürünleri listeleyen, ürün detayını gösteren ve basit bir sepet simülasyonu içeren mobil katalog uygulaması.
+Flutter eğitim haftası kapsamında geliştirilen; ürünleri listeleyen, ürün detayını gösteren ve basit bir sepet simülasyonu içeren mobil katalog uygulaması.
 
 > 🚧 Geliştirme devam ediyor.
 
 ## Özellikler
 
-- Ürünlerin `GridView` ile kart tabanlı listelenmesi
-- Ürün adına göre arama / filtreleme
+- Ürün verilerinin yerel JSON dosyasından okunması (`rootBundle` ile JSON simülasyonu)
+- Ürünlerin 2 sütunlu `GridView` ile kart tabanlı listelenmesi
+- Ürün adına göre arama / filtreleme (`setState`)
 - Named Routes ve Route Arguments ile ürün detay sayfasına geçiş
-- Ürün detayında açıklama ve teknik özellikler
-- Sepete ekleme / çıkarma, toplam tutar ve boş sepet ekranı
+- Ürün detayında açıklama ve teknik özellikler (Specifications)
+- Sepete ekleme / çıkarma, toplam tutar, boş sepet ekranı ve Checkout simülasyonu
+- Sepet durumunun `ChangeNotifier` ile yönetimi
 - Ekstra paket kullanılmadan, yalnızca Flutter SDK (`material.dart`) ile geliştirilmiştir
 
 ## Kullanılan Teknolojiler
@@ -21,6 +23,9 @@ Flutter eğitim haftası kapsamında geliştirilen, ürünleri listeleyen, ürü
 | Dart | 3.13.5 |
 | Hedef platform | Android (Emulator: Medium Phone API 35) |
 | Editör | Visual Studio Code |
+| Emülatör aracı | Android Studio (yalnızca Android Emulator için) |
+
+> Sürüm bilgisi `flutter --version` komutunun çıktısından alınmıştır.
 
 ## Proje Yapısı
 
@@ -28,15 +33,16 @@ Flutter eğitim haftası kapsamında geliştirilen, ürünleri listeleyen, ürü
 lib/
 ├── main.dart
 ├── app/        # rotalar ve tema
-├── models/     # Product modeli
+├── models/     # Product modeli (fromJson / toJson)
 ├── data/       # JSON veri okuma (repository)
 ├── state/      # sepet durumu (ChangeNotifier)
 ├── screens/    # home, detail, cart ekranları
 ├── widgets/    # tekrar kullanılan bileşenler
-└── utils/      # yardımcı fonksiyonlar
+└── utils/      # yardımcı fonksiyonlar (fiyat çevirme)
 assets/
 ├── data/       # products.json
 └── images/     # banner ve yer tutucu görseller
+screenshots/    # README ekran görüntüleri
 ```
 
 ## Çalıştırma Adımları
@@ -59,6 +65,8 @@ assets/
    flutter run
    ```
 
+> Ürün görselleri internetten yüklendiği için cihazın/emülatörün internet bağlantısı olmalıdır.
+
 ## Ekran Görüntüleri
 
 _Proje tamamlandığında eklenecek._
@@ -66,9 +74,9 @@ _Proje tamamlandığında eklenecek._
 <!--
 | Ana Sayfa | Ürün Detayı | Sepet | Boş Sepet |
 |---|---|---|---|
-| ![](screenshots/home.png) | ![](screenshots/detail.png) | ![](screenshots/cart.png) | ![](screenshots/cart_empty.png) |
+| <img src="screenshots/home.png" width="200"> | <img src="screenshots/detail.png" width="200"> | <img src="screenshots/cart.png" width="200"> | <img src="screenshots/cart_empty.png" width="200"> |
 -->
 
 ## Veri Kaynağı
 
-Ürün verileri [wantapi.com](https://wantapi.com/products.php) adresindeki eğitim amaçlı mock veriden alınmış ve `assets/data/products.json` olarak projeye eklenmiştir. Bu veri gerçek bir e-ticaret altyapısını temsil etmez. Ürün adları ve markalar ilgili sahiplerine aittir.
+Ürün verileri [wantapi.com](https://wantapi.com/products.php) adresindeki eğitim amaçlı mock veriden alınmış ve `assets/data/products.json` olarak projeye eklenmiştir. Bu veri gerçek bir e-ticaret altyapısını temsil etmez. Ürün adları ve markalar ilgili sahiplerine aittir; veri yalnızca eğitim amaçlı kullanılmıştır.
