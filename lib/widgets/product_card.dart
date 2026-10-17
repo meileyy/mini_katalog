@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../app/routes.dart';
 import '../app/theme.dart';
 import '../models/product.dart';
+import 'product_image.dart';
 
 // Ana sayfadaki grid'de tek bir ürünü gösteren kart.
 class ProductCard extends StatelessWidget {
@@ -16,10 +17,11 @@ class ProductCard extends StatelessWidget {
 
     // Kart yaklaşık ekranın yarısı kadar geniş. Görsel bu genişliğin piksel
     // karşılığında açılır; 1024 px'lik dosyanın tamamı belleğe alınmaz.
-    final int imageCacheWidth = (MediaQuery.sizeOf(context).width /
-            2 *
-            MediaQuery.devicePixelRatioOf(context))
-        .round();
+    final int imageCacheWidth =
+        (MediaQuery.sizeOf(context).width /
+                2 *
+                MediaQuery.devicePixelRatioOf(context))
+            .round();
 
     // Card'ın rengi, köşeleri ve kırpması temadaki cardTheme'den gelir.
     return Card(
@@ -35,31 +37,9 @@ class ProductCard extends StatelessWidget {
           children: [
             // Görsel, metinlerden kalan alanın tamamını kaplar.
             Expanded(
-              child: Image.network(
-                product.image,
-                width: double.infinity,
-                height: double.infinity,
-                fit: BoxFit.cover,
-                // Görseli kartın boyutuna küçülterek açar (bellek + kaydırma)
+              child: ProductImage(
+                url: product.image,
                 cacheWidth: imageCacheWidth,
-                // Görsel inerken yükleniyor göstergesi
-                loadingBuilder: (context, child, progress) {
-                  if (progress == null) return child;
-                  return const Center(
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  );
-                },
-                // Görsel yüklenemezse gri kutu + ikon
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    color: AppColors.background,
-                    alignment: Alignment.center,
-                    child: const Icon(
-                      Icons.image_not_supported,
-                      color: AppColors.textSecondary,
-                    ),
-                  );
-                },
               ),
             ),
             Padding(

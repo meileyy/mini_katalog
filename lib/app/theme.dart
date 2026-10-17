@@ -8,6 +8,7 @@ class AppColors {
   static const Color surface = Colors.white;
   static const Color textPrimary = Color(0xFF1E1E2C);
   static const Color textSecondary = Color(0xFF8A8D9F);
+  static const Color border = Color(0xFFE3E5EC);
 }
 
 /// Uygulamanın açık teması.
@@ -51,10 +52,32 @@ class AppTheme {
           fontWeight: FontWeight.bold,
           color: AppColors.textPrimary,
         ),
+        headlineSmall: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: AppColors.textPrimary,
+        ),
+        // AppBar'daki "‹ Back" / "‹ Cart" etiketi (AppBar başlıklarının da varsayılanı)
+        titleLarge: TextStyle(
+          fontSize: 17,
+          fontWeight: FontWeight.normal,
+          color: AppColors.textPrimary,
+        ),
         titleMedium: TextStyle(
           fontSize: 15,
           fontWeight: FontWeight.w600,
           color: AppColors.textPrimary,
+        ),
+        titleSmall: TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.bold,
+          color: AppColors.textPrimary,
+        ),
+        labelSmall: TextStyle(
+          fontSize: 10,
+          fontWeight: FontWeight.w500,
+          letterSpacing: 0.5,
+          color: AppColors.textSecondary,
         ),
         bodyMedium: TextStyle(fontSize: 14, color: AppColors.textPrimary),
         bodySmall: TextStyle(fontSize: 12, color: AppColors.textSecondary),
