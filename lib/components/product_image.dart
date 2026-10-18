@@ -13,13 +13,20 @@ class ProductImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Açılışta ekran genişliği kısa süre 0 görünebilir; hesaplanan değer
+    // 0 veya negatif olursa Image.network assert hatası verir. Bu durumda
+    // null geçilir, görsel tam boyutunda açılır.
+    final int? safeCacheWidth = (cacheWidth != null && cacheWidth! > 0)
+        ? cacheWidth
+        : null;
+
     return Image.network(
       url,
       width: double.infinity,
       height: double.infinity,
       fit: BoxFit.cover,
       // Görseli gösterileceği boyuta küçülterek açar (bellek + kaydırma)
-      cacheWidth: cacheWidth,
+      cacheWidth: safeCacheWidth,
       // Görsel inerken yükleniyor göstergesi
       loadingBuilder: (context, child, progress) {
         if (progress == null) return child;
