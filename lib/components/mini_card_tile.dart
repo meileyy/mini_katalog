@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 import '../app/theme.dart';
-import '../models/product.dart';
+import '../models/products_model.dart';
 import '../state/cart_controller.dart';
 import 'product_image.dart';
 
 // Sepet listesindeki tek satır: küçük görsel, ad, tagline, fiyat ve ⊖ butonu.
-class CartItemTile extends StatelessWidget {
+class MiniCardTile extends StatelessWidget {
   final Product product;
 
-  const CartItemTile({super.key, required this.product});
+  const MiniCardTile({super.key, required this.product});
 
   // Soldaki küçük görselin kenar uzunluğu
   static const double imageSize = 56;

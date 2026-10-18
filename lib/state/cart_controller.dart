@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
 
-import '../models/product.dart';
+import '../models/products_model.dart';
 import '../utils/price_parser.dart';
 
 // Sepetteki ürünleri tutan sınıf. Değişiklik olunca dinleyen ekranlara

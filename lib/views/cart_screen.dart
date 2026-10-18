@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../app/theme.dart';
-import '../../models/product.dart';
-import '../../state/cart_controller.dart';
-import '../../widgets/back_label_button.dart';
-import '../../widgets/cart_item_tile.dart';
-import '../../widgets/cart_summary.dart';
-import '../../widgets/empty_state.dart';
+import '../app/theme.dart';
+import '../components/back_label_button.dart';
+import '../components/cart_summary.dart';
+import '../components/empty_cart.dart';
+import '../components/mini_card_tile.dart';
+import '../models/products_model.dart';
+import '../state/cart_controller.dart';
 
 // Sepet ekranı. Sepet global cartController'dan okunur; constructor ya da
 // route argümanı ile gelmez.
@@ -34,7 +34,7 @@ class CartScreen extends StatelessWidget {
           final List<Product> items = cartController.items;
 
           if (items.isEmpty) {
-            return const EmptyState(
+            return const EmptyCart(
               icon: Icons.shopping_cart_outlined,
               title: 'Your cart is empty',
               message: 'Add items to start shopping',
@@ -46,7 +46,7 @@ class CartScreen extends StatelessWidget {
             itemCount: items.length,
             itemBuilder: (context, index) => Padding(
               padding: const EdgeInsets.only(bottom: 12),
-              child: CartItemTile(product: items[index]),
+              child: MiniCardTile(product: items[index]),
             ),
           );
         },

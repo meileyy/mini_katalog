@@ -30,13 +30,13 @@ Flutter eğitim haftası kapsamında geliştirilen; ürünleri listeleyen, ürü
 ```
 lib/
 ├── main.dart
-├── app/        # rotalar ve tema
-├── models/     # Product modeli (fromJson / toJson)
-├── data/       # JSON veri okuma (repository)
-├── state/      # sepet durumu (ChangeNotifier)
-├── screens/    # home, detail, cart ekranları
-├── widgets/    # tekrar kullanılan bileşenler
-└── utils/      # yardımcı fonksiyonlar (fiyat çevirme)
+├── app/          # rotalar ve tema
+├── models/       # products_model.dart: Product modeli (fromJson / toJson)
+├── data/         # JSON veri okuma (repository)
+├── state/        # sepet durumu (ChangeNotifier)
+├── views/        # home, product detail, cart ekranları
+├── components/   # tekrar kullanılan bileşenler
+└── utils/        # yardımcı fonksiyonlar (fiyat çevirme)
 assets/
 ├── data/       # products.json
 └── images/     # banner görseli

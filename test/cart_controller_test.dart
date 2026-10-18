@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:mini_katalog/models/product.dart';
+import 'package:mini_katalog/models/products_model.dart';
 import 'package:mini_katalog/state/cart_controller.dart';
 
 // Testlerde kullanılan basit ürün; yalnızca id ve fiyat önemli.

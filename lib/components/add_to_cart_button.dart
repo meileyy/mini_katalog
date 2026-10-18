@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../app/theme.dart';
-import '../models/product.dart';
+import '../models/products_model.dart';
 import '../state/cart_controller.dart';
 
 // Detay ekranının altında, tam genişlikte "Add to Cart" butonu.

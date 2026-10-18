@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../app/theme.dart';
-import '../../data/product_repository.dart';
-import '../../models/product.dart';
-import '../../utils/search_text.dart';
-import '../../widgets/cart_icon_button.dart';
-import '../../widgets/product_card.dart';
-import '../../widgets/search_bar_field.dart';
+import '../app/theme.dart';
+import '../components/cart_icon_button.dart';
+import '../components/product_card_tile.dart';
+import '../components/search_bar_field.dart';
+import '../data/product_repository.dart';
+import '../models/products_model.dart';
+import '../utils/search_text.dart';
 
 // Ana sayfa: başlık, banner ve 2 sütunlu ürün grid'i.
 class HomeScreen extends StatefulWidget {
@@ -141,7 +141,8 @@ class _HomeScreenState extends State<HomeScreen> {
         childAspectRatio: 0.72,
       ),
       itemCount: products.length,
-      itemBuilder: (context, index) => ProductCard(product: products[index]),
+      itemBuilder: (context, index) =>
+          ProductCardTile(product: products[index]),
     );
   }
 }

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-import '../../app/theme.dart';
-import '../../models/product.dart';
-import '../../widgets/add_to_cart_button.dart';
-import '../../widgets/back_label_button.dart';
-import '../../widgets/cart_icon_button.dart';
-import '../../widgets/product_image.dart';
-import '../../widgets/spec_chip.dart';
+import '../app/theme.dart';
+import '../components/add_to_cart_button.dart';
+import '../components/back_label_button.dart';
+import '../components/cart_icon_button.dart';
+import '../components/product_image.dart';
+import '../components/spec_chip.dart';
+import '../models/products_model.dart';
 
 // Ürün detay ekranı. Ürün constructor ile değil, route arguments ile gelir.
-class DetailScreen extends StatelessWidget {
-  const DetailScreen({super.key});
+class ProductDetailScreen extends StatelessWidget {
+  const ProductDetailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

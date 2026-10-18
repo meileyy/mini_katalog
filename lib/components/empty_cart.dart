@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../app/theme.dart';
 
-// Ortada açık gri ikon, gri başlık ve daha açık gri açıklama gösteren
-// boş durum ekranı. Sepet boşken kullanılır.
-class EmptyState extends StatelessWidget {
+// Sepet boşken gösterilen ekran: ortada açık gri ikon, gri başlık ve
+// daha açık gri açıklama. İkon ve metinler dışarıdan parametreyle verilir.
+class EmptyCart extends StatelessWidget {
   final IconData icon;
   final String title;
   final String message;
 
-  const EmptyState({
+  const EmptyCart({
     super.key,
     required this.icon,
     required this.title,

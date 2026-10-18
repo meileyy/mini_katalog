@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:mini_katalog/app/theme.dart';
-import 'package:mini_katalog/models/product.dart';
-import 'package:mini_katalog/screens/cart/cart_screen.dart';
+import 'package:mini_katalog/components/mini_card_tile.dart';
+import 'package:mini_katalog/models/products_model.dart';
 import 'package:mini_katalog/state/cart_controller.dart';
-import 'package:mini_katalog/widgets/cart_item_tile.dart';
+import 'package:mini_katalog/views/cart_screen.dart';
 
 // Sepet ekranını tek başına açar. Görseller testte indirilemez;
 // hata kutusu çizilsin diye bir kare daha (pumpAndSettle kullanılmaz).
@@ -63,7 +63,7 @@ void main() {
     cartController.add(macbook);
     await pumpCart(tester);
 
-    expect(find.byType(CartItemTile), findsNWidgets(2));
+    expect(find.byType(MiniCardTile), findsNWidgets(2));
     expect(find.text('iPhone 15 Pro'), findsOneWidget);
     expect(find.text('MacBook Pro 16"'), findsOneWidget);
     expect(find.text('\$3,498'), findsOneWidget);
@@ -89,7 +89,7 @@ void main() {
     await tester.tap(find.byIcon(Icons.remove_circle_outline).first);
     await tester.pump();
 
-    expect(find.byType(CartItemTile), findsOneWidget);
+    expect(find.byType(MiniCardTile), findsOneWidget);
     expect(find.text('iPhone 15 Pro'), findsNothing);
     expect(find.text('\$3,498'), findsNothing);
     // Kalan tek ürünün fiyatı hem satırda hem toplamda: 2 kez

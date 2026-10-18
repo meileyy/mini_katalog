@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 
-import '../models/product.dart';
+import '../models/products_model.dart';
 
 // Ürün verisini assets içindeki JSON dosyasından okuyan sınıf.
 // Ekranlar JSON'a doğrudan dokunmaz; ürünleri yalnızca buradan alır.

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../models/product.dart';
-import '../screens/cart/cart_screen.dart';
-import '../screens/detail/detail_screen.dart';
-import '../screens/home/home_screen.dart';
+import '../models/products_model.dart';
+import '../views/cart_screen.dart';
+import '../views/home_screen.dart';
+import '../views/product_detail_screen.dart';
 
 // Uygulamadaki rota adları ve rotaları üreten fonksiyon.
 class AppRoutes {
@@ -31,7 +31,7 @@ class AppRoutes {
           );
         }
         return MaterialPageRoute(
-          builder: (_) => const DetailScreen(),
+          builder: (_) => const ProductDetailScreen(),
           settings: settings,
         );
       case cart:

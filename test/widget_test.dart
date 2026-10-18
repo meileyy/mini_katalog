@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:mini_katalog/components/mini_card_tile.dart';
+import 'package:mini_katalog/components/product_card_tile.dart';
 import 'package:mini_katalog/main.dart';
-import 'package:mini_katalog/models/product.dart';
+import 'package:mini_katalog/models/products_model.dart';
 import 'package:mini_katalog/state/cart_controller.dart';
-import 'package:mini_katalog/widgets/cart_item_tile.dart';
-import 'package:mini_katalog/widgets/product_card.dart';
 
 void main() {
   // Global sepet testler arasında durum taşır; her test boş sepetle başlar.
@@ -97,7 +97,7 @@ void main() {
       // Ürüne dokun → detay ekranı (route arguments). Test penceresi
       // 800x600; kartın alttaki metni ekran dışında kalır, bu yüzden
       // metne değil kartın ortasına dokunulur.
-      await tester.tap(find.widgetWithText(ProductCard, 'iPhone 15 Pro'));
+      await tester.tap(find.widgetWithText(ProductCardTile, 'iPhone 15 Pro'));
       await tester.pump(); // geçiş başlar
       await tester.pump(const Duration(milliseconds: 500)); // geçiş biter
       expect(find.text('Description'), findsOneWidget);
@@ -110,14 +110,14 @@ void main() {
       await tester.tap(find.byTooltip('Cart'));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 500));
-      expect(find.byType(CartItemTile), findsOneWidget);
+      expect(find.byType(MiniCardTile), findsOneWidget);
       expect(find.text('iPhone 15 Pro'), findsOneWidget);
 
       // "‹ Cart" → detay ekranına geri
       await tester.tap(find.text('Cart'));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 500));
-      expect(find.byType(CartItemTile), findsNothing);
+      expect(find.byType(MiniCardTile), findsNothing);
       expect(find.text('Add to Cart'), findsOneWidget);
     },
   );

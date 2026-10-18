@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../app/routes.dart';
 import '../app/theme.dart';
-import '../models/product.dart';
+import '../models/products_model.dart';
 import 'product_image.dart';
 
 // Ana sayfadaki grid'de tek bir ürünü gösteren kart.
-class ProductCard extends StatelessWidget {
+class ProductCardTile extends StatelessWidget {
   final Product product;
 
-  const ProductCard({super.key, required this.product});
+  const ProductCardTile({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {

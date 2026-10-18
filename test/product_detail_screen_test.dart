@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:mini_katalog/app/theme.dart';
-import 'package:mini_katalog/models/product.dart';
-import 'package:mini_katalog/screens/detail/detail_screen.dart';
+import 'package:mini_katalog/models/products_model.dart';
+import 'package:mini_katalog/views/product_detail_screen.dart';
 import 'package:mini_katalog/state/cart_controller.dart';
 
 // Detay ekranını, ürünü route argümanı olarak vererek açar (uygulamadaki gibi).
@@ -12,7 +12,7 @@ Future<void> pumpDetail(WidgetTester tester, Product product) async {
     MaterialApp(
       theme: AppTheme.light,
       onGenerateRoute: (settings) => MaterialPageRoute(
-        builder: (_) => const DetailScreen(),
+        builder: (_) => const ProductDetailScreen(),
         settings: RouteSettings(name: settings.name, arguments: product),
       ),
     ),
