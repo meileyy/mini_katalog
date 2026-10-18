@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../app/routes.dart';
 import '../app/theme.dart';
 import '../components/cart_icon_button.dart';
 import '../components/product_card_tile.dart';
 import '../components/search_bar_field.dart';
 import '../models/products_model.dart';
 import '../services/api_service.dart';
+import '../services/local_storage_service.dart';
+import '../state/cart_controller.dart';
 import '../utils/search_text.dart';
 
 // Ana sayfa: başlık, banner ve 2 sütunlu ürün grid'i.
@@ -25,10 +28,36 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
   String _query = '';
 
+  // Selamlamadaki ad; yüklenene kadar ya da kayıt yoksa null.
+  String? _name;
+
   @override
   void initState() {
     super.initState();
     _productsFuture = ApiService().fetchProducts();
+    _loadName();
+  }
+
+  // Kayıtlı ad okunur; hata olursa servis null döner, selamlama gizli kalır.
+  Future<void> _loadName() async {
+    final String? name = await LocalStorageService().getName();
+    // await sırasında ekran kapanmış olabilir.
+    if (!mounted) return;
+    setState(() => _name = name);
+  }
+
+  // Çıkış: kayıt silinir, sepet boşaltılır ve login'e dönülür.
+  Future<void> _logout() async {
+    await LocalStorageService().clearUser();
+    // Sepet yalnızca bellekte; sonraki kullanıcı önceki sepeti görmesin.
+    cartController.clear();
+    if (!mounted) return;
+    // Tüm rotalar kaldırılır; geri tuşu ana sayfaya döndürmez.
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      AppRoutes.login,
+      (route) => false,
+    );
   }
 
   @override
@@ -49,13 +78,29 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Başlık ve sağda sepet ikonu
+              // Selamlama: Text ad yokken de çizilir (içerik ''). Boş Text de
+              // bir satır yüksekliği kapladığı için ad yüklenince ekran zıplamaz.
+              Text(
+                (_name ?? '').isEmpty ? '' : 'Welcome, $_name',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: textTheme.bodyMedium?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+              ),
+              // Başlık ve sağda sepet ve çıkış ikonları
               Row(
                 children: [
                   Expanded(
                     child: Text('Discover', style: textTheme.headlineMedium),
                   ),
                   const CartIconButton(),
+                  IconButton(
+                    icon: const Icon(Icons.logout),
+                    color: AppColors.textPrimary,
+                    tooltip: 'Logout',
+                    onPressed: _logout,
+                  ),
                 ],
               ),
               Text(

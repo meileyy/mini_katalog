@@ -4,6 +4,8 @@ Flutter eğitim haftası kapsamında geliştirilen; ürünleri listeleyen, ürü
 
 ## Özellikler
 
+- Ad/soyad ile login; bilgiler `shared_preferences` ile cihazda saklanır, sonraki açılışta login atlanır
+- Ana sayfada *"Welcome, <Ad>"* selamlaması ve logout (kayıt silinir, sepet boşaltılır, login ekranına dönülür)
 - Ürünlerin `http` paketiyle API'den çekilmesi (`wantapi.com`, 10 sn zaman aşımı)
 - API'ye ulaşılamazsa yerel JSON dosyasına düşülmesi (`rootBundle` ile JSON simülasyonu)
 - Ürünlerin 2 sütunlu `GridView` ile kart tabanlı listelenmesi
@@ -22,9 +24,10 @@ Yönerge ekstra paket kullanılmamasını ister. Aşağıdaki iki paket, hocanı
 | Paket | Kullanım amacı | Durum |
 |---|---|---|
 | [`http`](https://pub.dev/packages/http) | Ürünleri `https://wantapi.com/products.php` adresinden çekmek | Eklendi |
-| [`shared_preferences`](https://pub.dev/packages/shared_preferences) | Login: kullanıcı adı/soyadını cihazda saklamak | Adım 15'te eklenecek |
+| [`shared_preferences`](https://pub.dev/packages/shared_preferences) | Login: kullanıcı adı/soyadını cihazda saklamak | Eklendi |
 
 Testlerde gerçek internete çıkılmaz; `http` paketinin kendi `MockClient`'ı (`package:http/testing.dart`) kullanılır.
+Yerel saklama testlerinde `shared_preferences` paketinin kendi `SharedPreferences.setMockInitialValues` metodu kullanılır.
 
 ## Kullanılan Teknolojiler
 
@@ -46,8 +49,9 @@ lib/
 ├── app/          # rotalar ve tema
 ├── models/       # products_model.dart: Product modeli (fromJson / toJson)
 ├── services/     # api_service.dart: API'den ürün çekme (http) + yerel JSON yedeği
+│                 # local_storage_service.dart: kullanıcı ad/soyadını saklama (shared_preferences)
 ├── state/        # sepet durumu (ChangeNotifier)
-├── views/        # home, product detail, cart ekranları
+├── views/        # login, home, product detail, cart ekranları
 ├── components/   # tekrar kullanılan bileşenler
 └── utils/        # yardımcı fonksiyonlar (fiyat çevirme)
 assets/
