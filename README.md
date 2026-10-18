@@ -1,6 +1,6 @@
 # Mini Katalog Uygulaması
 
-Flutter eğitim haftası kapsamında geliştirilen; ürünleri listeleyen, ürün detayını gösteren ve basit bir sepet simülasyonu içeren mobil katalog uygulaması.
+Flutter eğitim haftası kapsamında geliştirilen; ad/soyad ile giriş yapılan, ürünleri API'den çekip listeleyen, ürün detayını gösteren ve basit bir sepet simülasyonu içeren mobil katalog uygulaması.
 
 ## Özellikler
 
@@ -9,22 +9,20 @@ Flutter eğitim haftası kapsamında geliştirilen; ürünleri listeleyen, ürü
 - Ürünlerin `http` paketiyle API'den çekilmesi (`wantapi.com`, 10 sn zaman aşımı)
 - API'ye ulaşılamazsa yerel JSON dosyasına düşülmesi (`rootBundle` ile JSON simülasyonu)
 - Ürünlerin 2 sütunlu `GridView` ile kart tabanlı listelenmesi
-- Ürün adına göre arama / filtreleme (`setState`)
+- Ürün adına göre arama / filtreleme (`setState`, Türkçe karakter uyumlu)
 - Named Routes ve Route Arguments ile ürün detay sayfasına geçiş
 - Ürün detayında açıklama ve teknik özellikler (Specifications)
 - Sepete ekleme / çıkarma, toplam tutar, boş sepet ekranı ve Checkout simülasyonu
 - Sepet durumunun `ChangeNotifier` ile yönetimi
-- Flutter SDK (`material.dart`) dışında yalnızca hocanın derste gösterdiği paketler kullanılmıştır (bkz. Kullanılan Paketler)
+- Flutter SDK (`material.dart`) dışında yalnızca hocanın derste gösterdiği paketler kullanılmıştır.
 
 ## Kullanılan Paketler
 
-Yönerge ekstra paket kullanılmamasını ister. Aşağıdaki iki paket, hocanın 8 Ekim ders kaydında gösterdiği ve
-**"localStorage veya API'den veri çekme"** ek kriteri için izin verilen paketlerdir; bunların dışında paket yoktur.
 
-| Paket | Kullanım amacı | Durum |
-|---|---|---|
-| [`http`](https://pub.dev/packages/http) | Ürünleri `https://wantapi.com/products.php` adresinden çekmek | Eklendi |
-| [`shared_preferences`](https://pub.dev/packages/shared_preferences) | Login: kullanıcı adı/soyadını cihazda saklamak | Eklendi |
+| Paket | Kullanım amacı |
+|---|---|
+| [`http`](https://pub.dev/packages/http) | Ürünleri `https://wantapi.com/products.php` adresinden çekmek |
+| [`shared_preferences`](https://pub.dev/packages/shared_preferences) | Login: kullanıcı adı/soyadını cihazda saklamak |
 
 Testlerde gerçek internete çıkılmaz; `http` paketinin kendi `MockClient`'ı (`package:http/testing.dart`) kullanılır.
 Yerel saklama testlerinde `shared_preferences` paketinin kendi `SharedPreferences.setMockInitialValues` metodu kullanılır.
@@ -39,25 +37,48 @@ Yerel saklama testlerinde `shared_preferences` paketinin kendi `SharedPreference
 | Editör | Visual Studio Code |
 | Emülatör aracı | Android Studio (yalnızca Android Emulator için) |
 
-> Sürüm bilgisi `flutter --version` komutunun çıktısından alınmıştır.
+`flutter --version` çıktısı:
+
+```
+Flutter 3.47.7 • channel stable • https://github.com/flutter/flutter.git
+Framework • revision abaf9c5237 (10 days ago) • 2026-10-08 09:51:21 -0700
+Engine • hash d8a2d6c768c334d53e16277f837970ffa1e2de81 (revision deb287481e) (10 days ago) • 2026-10-07 17:09:12.000Z
+Tools • Dart 3.13.5 • DevTools 2.60.0
+```
 
 ## Proje Yapısı
 
 ```
 lib/
-├── main.dart
-├── app/          # rotalar ve tema
-├── models/       # products_model.dart: Product modeli (fromJson / toJson)
-├── services/     # api_service.dart: API'den ürün çekme (http) + yerel JSON yedeği
-│                 # local_storage_service.dart: kullanıcı ad/soyadını saklama (shared_preferences)
-├── state/        # sepet durumu (ChangeNotifier)
-├── views/        # login, home, product detail, cart ekranları
-├── components/   # tekrar kullanılan bileşenler
-└── utils/        # yardımcı fonksiyonlar (fiyat çevirme)
+├── main.dart                         # uygulamanın girişi: kayıtlı kullanıcıya göre login veya ana sayfa açılır
+├── app/
+│   ├── routes.dart                   # rota adları (login, home, detail, cart) ve onGenerateRoute
+│   └── theme.dart                    # renkler (AppColors) ve tema (AppTheme)
+├── components/                       # tekrar kullanılan bileşenler:
+│                                     # product_card_tile, mini_card_tile, empty_cart, search_bar_field, spec_chip,
+│                                     # product_image, back_label_button, cart_icon_button, add_to_cart_button,
+│                                     # cart_summary, checkout_button
+├── models/
+│   └── products_model.dart           # Product modeli (fromJson / toJson)
+├── services/
+│   ├── api_service.dart              # http ile API'den ürün çekme; hata olursa yerel JSON'a düşer
+│   └── local_storage_service.dart    # shared_preferences ile kullanıcı ad/soyadını kaydetme, okuma, silme
+├── state/
+│   └── cart_controller.dart          # sepet durumu (ChangeNotifier) + global cartController
+├── utils/
+│   ├── price_parser.dart             # "$2,499" → 2499.0
+│   ├── price_formatter.dart          # 3498.0 → "$3,498"
+│   └── search_text.dart              # aramada Türkçe karakter uyumu
+└── views/
+    ├── login_screen.dart
+    ├── home_screen.dart
+    ├── product_detail_screen.dart
+    └── cart_screen.dart
 assets/
-├── data/       # products.json (API'ye ulaşılamazsa kullanılan yedek veri)
-└── images/     # banner görseli
-screenshots/    # README ekran görüntüleri
+├── data/products.json                # API'ye ulaşılamazsa kullanılan yedek veri
+└── images/banner.png                 # ana sayfa banner görseli
+screenshots/                          # README ekran görüntüleri
+test/                                 # birim ve widget testleri
 ```
 
 ## Çalıştırma Adımları
@@ -83,12 +104,33 @@ screenshots/    # README ekran görüntüleri
 > Ürünler ve görselleri internetten yüklendiği için cihazın/emülatörün internet bağlantısı olmalıdır.
 > İnternet yoksa ürün listesi yerel JSON'dan gelir; görseller yerine gri yer tutucu görünür.
 
+## Testler
+
+```bash
+flutter analyze   # statik analiz
+flutter test      # tüm testler
+```
+
+Testler internet bağlantısı gerektirmez. Kapsam:
+
+- **Model ve yardımcılar:** `Product.fromJson` / `toJson`, eksik veya yanlış tipte alanlar, fiyat çevirme ve biçimlendirme, Türkçe karakterli arama
+- **API servisi:** başarılı yanıt; 500 hatası, bağlantı hatası, zaman aşımı, bozuk veya boş JSON durumlarında yerel JSON'a düşme (`MockClient`)
+- **Yerel saklama:** ad/soyad kaydetme, okuma, silme (`SharedPreferences.setMockInitialValues`)
+- **Sepet:** ekleme, çıkarma, temizleme, toplam tutar, `notifyListeners`
+- **Ekranlar:** login doğrulaması ve yönlendirme, arama filtresi, sepet rozeti, logout, detay ekranı, sepet ve Checkout
+
 ## Ekran Görüntüleri
 
-| Ana Sayfa | Ürün Detayı | Sepet | Boş Sepet |
-|---|---|---|---|
-| <img src="screenshots/home.png" width="200"> | <img src="screenshots/detail.png" width="200"> | <img src="screenshots/cart.png" width="200"> | <img src="screenshots/cart_empty.png" width="200"> |
+| Login | Ana Sayfa | Ürün Detayı |
+|---|---|---|
+| <img src="screenshots/login.png" width="200"> | <img src="screenshots/home.png" width="200"> | <img src="screenshots/detail.png" width="200"> |
+
+| Sepet | Boş Sepet |
+|---|---|
+| <img src="screenshots/cart.png" width="200"> | <img src="screenshots/cart_empty.png" width="200"> |
 
 ## Veri Kaynağı
 
-Ürün verileri uygulama açılışında [wantapi.com](https://wantapi.com/products.php) adresindeki eğitim amaçlı mock API'den `http` ile çekilir. Aynı verinin bir kopyası `assets/data/products.json` olarak projede bulunur; istek başarısız olursa (zaman aşımı, bağlantı hatası, 200 dışı yanıt, bozuk veri) bu yedek kullanılır. Bu veri gerçek bir e-ticaret altyapısını temsil etmez. Ürün adları ve markalar ilgili sahiplerine aittir; veri yalnızca eğitim amaçlı kullanılmıştır.
+Ürün verileri uygulama açılışında [wantapi.com](https://wantapi.com/products.php) adresindeki eğitim amaçlı mock API'den `http` ile çekilir. Aynı verinin bir kopyası `assets/data/products.json` olarak projede bulunur; istek başarısız olursa (zaman aşımı, bağlantı hatası, 200 dışı yanıt, bozuk veya boş veri) bu yedek kullanılır. Bu veri gerçek bir e-ticaret altyapısını temsil etmez.
+
+> **Not:** Ürün adları ve markalar sahiplerine aittir; veri yalnızca eğitim amaçlıdır.
