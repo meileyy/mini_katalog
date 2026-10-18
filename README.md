@@ -2,8 +2,6 @@
 
 Flutter eğitim haftası kapsamında geliştirilen; ürünleri listeleyen, ürün detayını gösteren ve basit bir sepet simülasyonu içeren mobil katalog uygulaması.
 
-> 🚧 Geliştirme devam ediyor.
-
 ## Özellikler
 
 - Ürün verilerinin yerel JSON dosyasından okunması (`rootBundle` ile JSON simülasyonu)
@@ -41,7 +39,7 @@ lib/
 └── utils/      # yardımcı fonksiyonlar (fiyat çevirme)
 assets/
 ├── data/       # products.json
-└── images/     # banner ve yer tutucu görseller
+└── images/     # banner görseli
 screenshots/    # README ekran görüntüleri
 ```
 
@@ -69,13 +67,9 @@ screenshots/    # README ekran görüntüleri
 
 ## Ekran Görüntüleri
 
-_Proje tamamlandığında eklenecek._
-
-<!--
 | Ana Sayfa | Ürün Detayı | Sepet | Boş Sepet |
 |---|---|---|---|
 | <img src="screenshots/home.png" width="200"> | <img src="screenshots/detail.png" width="200"> | <img src="screenshots/cart.png" width="200"> | <img src="screenshots/cart_empty.png" width="200"> |
--->
 
 ## Veri Kaynağı
 
