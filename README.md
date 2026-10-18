@@ -4,14 +4,27 @@ Flutter eğitim haftası kapsamında geliştirilen; ürünleri listeleyen, ürü
 
 ## Özellikler
 
-- Ürün verilerinin yerel JSON dosyasından okunması (`rootBundle` ile JSON simülasyonu)
+- Ürünlerin `http` paketiyle API'den çekilmesi (`wantapi.com`, 10 sn zaman aşımı)
+- API'ye ulaşılamazsa yerel JSON dosyasına düşülmesi (`rootBundle` ile JSON simülasyonu)
 - Ürünlerin 2 sütunlu `GridView` ile kart tabanlı listelenmesi
 - Ürün adına göre arama / filtreleme (`setState`)
 - Named Routes ve Route Arguments ile ürün detay sayfasına geçiş
 - Ürün detayında açıklama ve teknik özellikler (Specifications)
 - Sepete ekleme / çıkarma, toplam tutar, boş sepet ekranı ve Checkout simülasyonu
 - Sepet durumunun `ChangeNotifier` ile yönetimi
-- Ekstra paket kullanılmadan, yalnızca Flutter SDK (`material.dart`) ile geliştirilmiştir
+- Flutter SDK (`material.dart`) dışında yalnızca hocanın derste gösterdiği paketler kullanılmıştır (bkz. Kullanılan Paketler)
+
+## Kullanılan Paketler
+
+Yönerge ekstra paket kullanılmamasını ister. Aşağıdaki iki paket, hocanın 8 Ekim ders kaydında gösterdiği ve
+**"localStorage veya API'den veri çekme"** ek kriteri için izin verilen paketlerdir; bunların dışında paket yoktur.
+
+| Paket | Kullanım amacı | Durum |
+|---|---|---|
+| [`http`](https://pub.dev/packages/http) | Ürünleri `https://wantapi.com/products.php` adresinden çekmek | Eklendi |
+| [`shared_preferences`](https://pub.dev/packages/shared_preferences) | Login: kullanıcı adı/soyadını cihazda saklamak | Adım 15'te eklenecek |
+
+Testlerde gerçek internete çıkılmaz; `http` paketinin kendi `MockClient`'ı (`package:http/testing.dart`) kullanılır.
 
 ## Kullanılan Teknolojiler
 
@@ -32,13 +45,13 @@ lib/
 ├── main.dart
 ├── app/          # rotalar ve tema
 ├── models/       # products_model.dart: Product modeli (fromJson / toJson)
-├── data/         # JSON veri okuma (repository)
+├── services/     # api_service.dart: API'den ürün çekme (http) + yerel JSON yedeği
 ├── state/        # sepet durumu (ChangeNotifier)
 ├── views/        # home, product detail, cart ekranları
 ├── components/   # tekrar kullanılan bileşenler
 └── utils/        # yardımcı fonksiyonlar (fiyat çevirme)
 assets/
-├── data/       # products.json
+├── data/       # products.json (API'ye ulaşılamazsa kullanılan yedek veri)
 └── images/     # banner görseli
 screenshots/    # README ekran görüntüleri
 ```
@@ -63,7 +76,8 @@ screenshots/    # README ekran görüntüleri
    flutter run
    ```
 
-> Ürün görselleri internetten yüklendiği için cihazın/emülatörün internet bağlantısı olmalıdır.
+> Ürünler ve görselleri internetten yüklendiği için cihazın/emülatörün internet bağlantısı olmalıdır.
+> İnternet yoksa ürün listesi yerel JSON'dan gelir; görseller yerine gri yer tutucu görünür.
 
 ## Ekran Görüntüleri
 
@@ -73,4 +87,4 @@ screenshots/    # README ekran görüntüleri
 
 ## Veri Kaynağı
 
-Ürün verileri [wantapi.com](https://wantapi.com/products.php) adresindeki eğitim amaçlı mock veriden alınmış ve `assets/data/products.json` olarak projeye eklenmiştir. Bu veri gerçek bir e-ticaret altyapısını temsil etmez. Ürün adları ve markalar ilgili sahiplerine aittir; veri yalnızca eğitim amaçlı kullanılmıştır.
+Ürün verileri uygulama açılışında [wantapi.com](https://wantapi.com/products.php) adresindeki eğitim amaçlı mock API'den `http` ile çekilir. Aynı verinin bir kopyası `assets/data/products.json` olarak projede bulunur; istek başarısız olursa (zaman aşımı, bağlantı hatası, 200 dışı yanıt, bozuk veri) bu yedek kullanılır. Bu veri gerçek bir e-ticaret altyapısını temsil etmez. Ürün adları ve markalar ilgili sahiplerine aittir; veri yalnızca eğitim amaçlı kullanılmıştır.

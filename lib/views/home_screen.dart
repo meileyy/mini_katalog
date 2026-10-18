@@ -4,8 +4,8 @@ import '../app/theme.dart';
 import '../components/cart_icon_button.dart';
 import '../components/product_card_tile.dart';
 import '../components/search_bar_field.dart';
-import '../data/product_repository.dart';
 import '../models/products_model.dart';
+import '../services/api_service.dart';
 import '../utils/search_text.dart';
 
 // Ana sayfa: başlık, banner ve 2 sütunlu ürün grid'i.
@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _productsFuture = const ProductRepository().loadProducts();
+    _productsFuture = ApiService().fetchProducts();
   }
 
   @override
